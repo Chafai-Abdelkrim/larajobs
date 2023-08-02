@@ -29,7 +29,7 @@
     <body class="mb-48">
         <nav class="flex justify-between items-center mb-4">
             <div class="p-6 bg-laravel rounded-br-xl">
-                <a href="index.html">
+                <a href="/">
                     <h1 class="text-4xl text-white">LJ</h1>
                 </a>
             </div>
