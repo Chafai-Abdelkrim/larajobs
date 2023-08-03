@@ -8,11 +8,26 @@ use Illuminate\Http\Request;
 class ListingController extends Controller
 {
     public function index() {
-        $tag = request('tag');
+       $query = Listing::latest();
 
-        return view('listings.index', [
-            'listings' => Listing::latest()->where('tags', 'like', '%' . request('tag') . '%')->get()
-        ]);
+       if (request('tag')) {
+        $query->where('tags', 'like', '%' . request('tag') . '%');
+       }
+
+       if (request('search')) {
+        $searchTerm = '%' . request('search') . '%';
+        $query->where(function ($query) use ($searchTerm) {
+            $query->where('tags', 'like', $searchTerm)
+            ->orWhere('title', 'like', $searchTerm)
+            ->orWhere('description', 'like', $searchTerm);
+        });
+       }
+
+       $listings = $query->get();
+
+       return view('listings.index', [
+        'listings' => $listings
+       ]);
     }
 
     public function show(Listing $listing) {
